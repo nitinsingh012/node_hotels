@@ -1,17 +1,20 @@
 const mongoose = require("mongoose");
+require('dotenv').config()
+// const url = "mongodb+srv://nitinsingh7323:FNjBvanRvPfbr2gT@nj.qfa6u.mongodb.net/myDatabase?retryWrites=true&w=majority";
+// const url = 'mongodb+srv://nitinsingh7323:root@nj.qfa6u.mongodb.net/?retryWrites=true&w=majority&appName=nj';
+const url = process.env.DB_NAME
+// const url = process.env.LOCAL
 
-const url = 'mongodb://localhost:27017/nitin';
-
-mongoose.connect(url) // No options needed for new versions
+mongoose.connect(url);
 
 const db = mongoose.connection;
 
-// Correcting the event names for connecting and errors
-db.on('connected', () => { // Changed 'connection' to 'connected'
+db.on('open', () => {
     console.log("Connected to MongoDB");
 });
+
 db.on('error', (err) => {
-    console.error("Error connecting to MongoDB:", err);
+    console.error("Error connecting to MongoDB:", err.message);
 });
 
 module.exports = db;
